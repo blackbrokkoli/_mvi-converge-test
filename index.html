@@ -18,35 +18,28 @@
             <p>You can select multiple answers.</p>
             <div id="answers">
 
-
-                <div class="answer-field" @click="answers[0].car = !answers[0].car ">
-                    <div class="img-container">
-                        <img src="/img/car.jpg" alt="" :class="{desaturate: !answers[0].car}">
+                <div :class="{inactive: !answer[0], answerField: true}"  @click="answers[0][i][0] = !answers[0][i][0]" v-for="(answer, i) in answers[0]">
+                    <div :class="{imgContainer: true, desaturate: !answer[0]}" :style="{ 'background-image': 'url(' + getImage(answer[1]) + ')' }">
+                        <svg class="icon green" v-if="answer[0]" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <!-- <img :src="'/img/' + answer[1].toLowerCase().replace(/\s/g, '') + '.jpg'" alt="" :class="{desaturate: !answer[0]}"> -->
                     </div>
-                    <h2 :class="{grey: !answers[0].car}">Car</h2>
+                    <h2 >{{answer[1]}}</h2>
                 </div>
-                <div class="answer-field">
-                    <h2>By Foot</h2>
-                </div>
-                <div class="answer-field">
-                    <h2>Plane</h2>
-                </div>
-                <div class="answer-field">
-                    <h2>Bus</h2>
-                </div>
-                <div class="answer-field">
-                    <h2>Taxi</h2>
-                </div>
-                <div class="answer-field">
-                    <h2>Train</h2>
-                </div>
-                <div class="answer-field">
-                    <h2>Bicycle</h2>
-                </div>
-                <div class="answer-field">
-                    <h2>Something Else</h2>
-                </div>
+
+
+
+
             </div>
+
+            <button class="button primary" @click="nextQuestion">Next Question</button>
+        </div>
+
+        <div id="q-2" v-if="page==2">
+            <h1>Thank you, your answer has been saved. That's it for now.</h1>
         </div>
 
 
@@ -66,10 +59,25 @@
                 message: 'Hello Vue!',
                 page: 1,
                 answers: [
-                    {
-                        car: false
-                    }
+                    [
+                        [false, 'Car'],
+                        [false, 'On Foot'],
+                        [false, 'Plane'],
+                        [false, 'Bus'],
+                        [false, 'Taxi'],
+                        [false, 'Train'],
+                        [false, 'Bicycle'],
+                        [false, 'Something Else']
+                    ]
                 ]
+            }
+        },
+        methods: {
+            getImage(name) {
+               return '/img/' + name.toLowerCase().replace(/\s/g, '') + '.jpg'
+            },
+            nextQuestion() {
+                this.page += 1
             }
         }
     }).mount('#app')
@@ -91,28 +99,66 @@
         max-width: 100vw;
     }
 
-    .answer-field {
+    .answerField {
         border-radius: 3px;
         background: white;
-        flex: 1;
+        flex-basis: 100%;
         cursor: pointer;
         box-shadow: 5px 5px 5px #ccc;
     }
 
-    .answer-field h2 {
-        margin: 26px;
+    .answerField h2 {
+        padding: 13px 26px;
     }
 
-    .img-container > img {
-        max-width: 100%;
-        max-height: 100%;
+
+    .imgContainer {
+        height: 150px;
+        background: grey;
+        background-position: center;
+        background-size: cover;
     }
 
-    .grey {
-        color: #666;
+    .inactive {
+        color: #888;
+        background: #ddd;
     }
+ 
+
+   
 
     .desaturate {
         filter: saturate(10%);
+    }
+
+    .icon {
+        width: 64px;
+        height: 64px;
+        position: absolute;
+        z-index: 999;
+        color: white;
+    }
+
+    .green {
+        background-color: green;
+        border-radius: 50%;
+    }
+
+    .flex {
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+    }
+
+    .primary {
+        margin: 26px;
+        background-color: #F58135;
+        color: white;
+        padding: 13px 26px;
+        font-size: 2em;
+        min-width: 80%;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer
     }
 </style>
