@@ -35,7 +35,7 @@
 
             </div>
 
-            <button class="button primary" @click="nextQuestion">Next Question</button>
+            <button class="button primary center" @click="nextQuestion" v-if="answers[0].toString().includes('true')">Next Question</button>
         </div>
 
         <div id="q-2" v-if="page==2">
@@ -161,4 +161,6 @@
         border-radius: 6px;
         cursor: pointer
     }
+
+
 </style>
