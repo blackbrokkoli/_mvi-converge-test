@@ -18,16 +18,18 @@
             <p>You can select multiple answers.</p>
             <div id="answers">
 
-                <div :class="{inactive: !answer[0], answerField: true}"  @click="answers[0][i][0] = !answers[0][i][0]" v-for="(answer, i) in answers[0]">
-                    <div :class="{imgContainer: true, desaturate: !answer[0]}" :style="{ 'background-image': 'url(.' + getImage(answer[1]) + ')' }">
-                        <svg class="icon green" v-if="answer[0]" fill="none" stroke="currentColor"
-                            viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <div :class="{inactive: !answer[0], answerField: true}" @click="answers[0][i][0] = !answers[0][i][0]"
+                    v-for="(answer, i) in answers[0]">
+                    <div :class="{imgContainer: true, desaturate: !answer[0]}"
+                        :style="{ 'background-image': 'url(.' + getImage(answer[1]) + ')' }">
+                        <svg class="icon green" v-if="answer[0]" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                         </svg>
                         <!-- <img :src="'/img/' + answer[1].toLowerCase().replace(/\s/g, '') + '.jpg'" alt="" :class="{desaturate: !answer[0]}"> -->
                     </div>
-                    <h2 >{{answer[1]}}</h2>
+                    <h2>{{answer[1]}}</h2>
                 </div>
 
 
@@ -35,7 +37,8 @@
 
             </div>
 
-            <button class="button primary center" @click="nextQuestion" v-if="answers[0].toString().includes('true')">Next Question</button>
+            <button class="button primary center" @click="nextQuestion"
+                v-if="answers[0].toString().includes('true')">Next Question</button>
         </div>
 
         <div id="q-2" v-if="page==2">
@@ -74,10 +77,48 @@
         },
         methods: {
             getImage(name) {
-               return '/img/' + name.toLowerCase().replace(/\s/g, '') + '.jpg'
+                return '/img/' + name.toLowerCase().replace(/\s/g, '') + '.jpg'
             },
             nextQuestion() {
                 this.page += 1
+
+                if (this.page == 2) {
+
+
+                    let url2 = 'https://api.sheety.co/e7b5b21c858689d4c2836219f10e7287/signupForm/emails';
+                    let body = {
+                        email: {
+                            name: "Anonym",
+                            question1: this.question1
+                        }
+                    }
+
+                    console.log(body)
+
+
+                    fetch(url2, {
+                        method: 'POST',
+                        body: JSON.stringify(body),
+                        headers: { "Content-Type": "application/json" }
+                    })
+                        .then((response) => response.json())
+                        .then(json => {
+                            // Do something with object
+                            console.log(json.sheet1);
+                        });
+                }
+            }
+        },
+        computed: {
+            question1() {
+                checkedAnswers = []
+                for (answer of this.answers[0]) {
+                    if (answer[0]) {
+                        checkedAnswers.push(answer[1])
+                    }
+                }
+                console.log(checkedAnswers.toString())
+                return checkedAnswers.toString()
             }
         }
     }).mount('#app')
@@ -123,9 +164,9 @@
         color: #888;
         background: #ddd;
     }
- 
 
-   
+
+
 
     .desaturate {
         filter: saturate(10%);
@@ -161,6 +202,4 @@
         border-radius: 6px;
         cursor: pointer
     }
-
-
 </style>
