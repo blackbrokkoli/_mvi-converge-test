@@ -20,6 +20,7 @@
     <div id="app">
         <div id="q-1" v-if="page==1">
             <h1>How did you get here today?</h1>
+            <h3>Come sei arrivato qui oggi?</h3>
             <button class="button primary center" @click="nextQuestion"
                 v-if="answers[0].toString().includes('true')">Next Question
             </button>
@@ -39,6 +40,7 @@
                         <!-- <img :src="'/img/' + answer[1].toLowerCase().replace(/\s/g, '') + '.jpg'" alt="" :class="{desaturate: !answer[0]}"> -->
                     </div>
                     <h2>{{answer[1]}}</h2>
+                    <h3>{{answer[2]}}</h3>
                 </div>
 
 
@@ -52,7 +54,8 @@
         </div>
 
         <div id="q-2" v-if="page==2">
-            <h1>Thank you, your answer has been saved. That's it for now.</h1>
+            <h1>Thank you, your answer has been saved. <br> That's it for now.</h1>
+            <h3>Grazie, la tua risposta è stata salvata. Questo è tutto per il momento.</h3>
         </div>
 
 
@@ -77,14 +80,14 @@
                 page: 1,
                 answers: [
                     [
-                        [false, 'Car'],
-                        [false, 'On Foot'],
-                        [false, 'Plane'],
-                        [false, 'Bus'],
-                        [false, 'Taxi'],
-                        [false, 'Train'],
-                        [false, 'Bicycle'],
-                        [false, 'Something Else']
+                        [false, 'Car', 'Auto'],
+                        [false, 'On Foot', 'A piedi'],
+                        [false, 'Plane', 'Aereo'],
+                        [false, 'Bus', 'Autobus'],
+                        [false, 'Taxi', 'Taxi'],
+                        [false, 'Train', 'Treno'],
+                        [false, 'Bicycle', 'Bicicletta'],
+                        [false, 'Other', "Qualcos'altro"]
                     ]
                 ]
             }
@@ -117,8 +120,6 @@
                     })
                         .then((response) => response.json())
                         .then(json => {
-                            // Do something with object
-                            console.log(json.sheet1);
                         });
                 }
             }
@@ -141,7 +142,7 @@
 <style>
     body,
     html {
-        background-color: #eee;
+        background-color: #F9F9F9;
         color: #222;
         font-family: 'Raleway', sans-serif;
         font-size: 24px;
@@ -155,21 +156,26 @@
         gap: 26px;
         margin: auto;
         justify-content: center;
+        margin-bottom: 26px;
     }
 
     .answerField {
         border-radius: 32px;
-        background: white;
+        background: #E7E7E7;
         flex-basis: 100%;
         cursor: pointer;
-        box-shadow: 5px 5px 5px #ccc;
+        box-shadow: 12px 12px 12px #ccc;
         max-width: 45%;
+        padding-bottom: 18px;
     }
 
+    .answerField h2, .answerField h3 {
+        padding: 0 26px;
+        margin: 0;
+    }
     .answerField h2 {
-        padding: 13px 26px;
+        margin-top: 18px;
     }
-
 
     .imgContainer {
         height: 150px;
@@ -231,5 +237,9 @@
 
     h2 {
         font-size: 62px;
+    }
+
+    h3 {
+        color: #888;
     }
 </style>
