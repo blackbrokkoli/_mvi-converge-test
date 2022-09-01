@@ -37,15 +37,10 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                         </svg>
-                        <!-- <img :src="'/img/' + answer[1].toLowerCase().replace(/\s/g, '') + '.jpg'" alt="" :class="{desaturate: !answer[0]}"> -->
                     </div>
                     <h2>{{answer[1]}}</h2>
                     <h3>{{answer[2]}}</h3>
                 </div>
-
-
-
-
             </div>
 
             <button class="button primary center" @click="nextQuestion"
@@ -54,12 +49,42 @@
         </div>
 
         <div id="q-2" v-if="page==2">
+            <h1>What is the most important thing you are taking back from here?</h1>
+            <h3>Qual è la cosa più importante che porti con te da qui?</h3>
+            <button class="button primary center" @click="nextQuestion"
+                v-if="answers[1].toString().includes('true')">Next Question
+            </button>
+            <div class="spacer" style="min-height:107px" v-else></div>
+            <p>You can select multiple answers.</p>
+
+            <div id="answers">
+
+                <div :class="{inactive: !answer[0], answerField: true}" @click="answers[1][i][0] = !answers[1][i][0]"
+                    v-for="(answer, i) in answers[1]">
+                    <div :class="{imgContainer: true, desaturate: !answer[0]}"
+                    :style="{ 'background-image': 'url(/img/monviso.jpg' }">
+                    <svg class="icon green" v-if="answer[0]" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+                    <h2>{{answer[1]}}</h2>
+                    <h3>{{answer[2]}}</h3>
+                </div>
+            </div>
+
+            <button class="button primary center" @click="nextQuestion"
+                v-if="answers[1].toString().includes('true')">Next Question
+            </button>
+        </div>
+
+        <div id="q-2" v-if="page==3">
             <h1>Thank you, your answer has been saved. <br> That's it for now.</h1>
             <h3>Grazie, la tua risposta è stata salvata. Questo è tutto per il momento.</h3>
         </div>
-
-
     </div>
+
 
 </body>
 <noscript>
@@ -88,6 +113,14 @@
                         [false, 'Train', 'Treno'],
                         [false, 'Bicycle', 'Bicicletta'],
                         [false, 'Other', "Qualcos'altro"]
+                    ],
+                    [
+                        [false, 'Memories', 'Ricordi'],
+                        [false, 'Presents', 'Regali'],
+                        [false, 'A changed perception', 'Una percezione cambiata'],
+                        [false, 'New ideas', 'Nuove idee'],
+                        [false, 'Nothing', 'Niente'],
+                        [false, 'A relaxed mind', 'Una mente rilassata']
                     ]
                 ]
             }
@@ -99,7 +132,7 @@
             nextQuestion() {
                 this.page += 1
 
-                if (this.page == 2) {
+                if (this.page == 3) {
 
 
                     let url2 = 'https://api.sheety.co/e7b5b21c858689d4c2836219f10e7287/signupForm/emails';
@@ -169,10 +202,12 @@
         padding-bottom: 18px;
     }
 
-    .answerField h2, .answerField h3 {
+    .answerField h2,
+    .answerField h3 {
         padding: 0 26px;
         margin: 0;
     }
+
     .answerField h2 {
         margin-top: 18px;
     }
